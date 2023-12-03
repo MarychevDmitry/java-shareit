@@ -4,10 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import ru.practicum.shareit.exception.ItemValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 
-public class ItemValidator{
+public class ItemValidator {
 
     public static boolean isItemValid(Item item) {
-        if(StringUtils.isBlank(item.getName())) {
+        if (StringUtils.isBlank(item.getName())) {
             throw new ItemValidationException("Item Name validation error.");
         } else if (StringUtils.isBlank(item.getDescription())) {
             throw new ItemValidationException("Item Description validation error.");
@@ -19,7 +19,7 @@ public class ItemValidator{
     }
 
     public static boolean isItemDtoValid(ItemDto itemDto) {
-        if(StringUtils.isBlank(itemDto.getName())) {
+        if (StringUtils.isBlank(itemDto.getName())) {
             throw new ItemValidationException("Item Name validation error.");
         } else if (StringUtils.isBlank(itemDto.getDescription())) {
             throw new ItemValidationException("Item Description validation error.");

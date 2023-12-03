@@ -15,10 +15,10 @@ import static ru.practicum.shareit.user.UserValidator.isUserValid;
 public class InMemoryUserStorage implements UserStorage {
 
     public Map<Long, User> users = new HashMap<>();
-    private Long Id = 0L;
+    private Long id = 0L;
 
     private Long generateId() {
-        return ++Id;
+        return ++id;
     }
 
     @Override
