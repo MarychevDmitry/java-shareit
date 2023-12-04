@@ -3,6 +3,10 @@ package ru.practicum.shareit.item;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * Класс описывающий модель Item
+ */
+
 @Data
 @AllArgsConstructor
 public class Item {

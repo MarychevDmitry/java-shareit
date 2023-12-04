@@ -7,6 +7,10 @@ import ru.practicum.shareit.user.dto.UserDto;
 import static ru.practicum.shareit.utilitary.Constants.EMAIL_REGEX_PATTERN;
 import static ru.practicum.shareit.utilitary.PatternValidator.isPatternMatches;
 
+/**
+ * Класс содержащий методы валидации для моделей User и UserDto
+ */
+
 public class UserValidator {
     public static boolean isUserValid(User user) {
         if (user.getId() != null && user.getId() <= 0) {

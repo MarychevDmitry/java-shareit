@@ -1,9 +1,9 @@
 package ru.practicum.shareit.user;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.ItemService;
+import ru.practicum.shareit.item.ItemServiceImpl;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
@@ -16,17 +16,12 @@ import static ru.practicum.shareit.user.UserValidator.isUserDtoValid;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "/users")
 public class UserController {
 
-    private UserService userService;
-    private ItemService itemService;
-
-    @Autowired
-    public UserController(UserService userService, ItemService itemService) {
-        this.userService = userService;
-        this.itemService = itemService;
-    }
+    private final UserServiceImpl userService;
+    private final ItemServiceImpl itemService;
 
     @GetMapping
     public List<UserDto> getUsers() {

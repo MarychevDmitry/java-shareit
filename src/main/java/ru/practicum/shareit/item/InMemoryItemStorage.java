@@ -20,7 +20,7 @@ public class InMemoryItemStorage implements ItemStorage {
     @Override
     public Item getItemById(Long itemId) {
         if (!items.containsKey(itemId)) {
-            throw new ItemNotFoundException("Item with ID = " + itemId + " not found!");
+            throw new ItemNotFoundException(itemId);
         }
         return items.get(itemId);
     }
@@ -56,7 +56,7 @@ public class InMemoryItemStorage implements ItemStorage {
     @Override
     public Item update(Item item) {
         if (!items.containsKey(item.getId())) {
-            throw new ItemNotFoundException("Item with ID = " + item.getId() + " not found!");
+            throw new ItemNotFoundException(item.getId());
         }
         if (item.getName() == null) {
             item.setName(items.get(item.getId()).getName());
@@ -75,7 +75,7 @@ public class InMemoryItemStorage implements ItemStorage {
     @Override
     public Item delete(Long itemId) {
         if (!items.containsKey(itemId)) {
-            throw new ItemNotFoundException("Item with ID = " + itemId + " not found!");
+            throw new ItemNotFoundException(itemId);
         }
         return items.remove(itemId);
     }

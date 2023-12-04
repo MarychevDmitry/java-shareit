@@ -29,7 +29,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User getUserById(Long userId) {
         if (!users.containsKey(userId)) {
-            throw new UserNotFoundException("User with ID = " + userId + " not found!");
+            throw new UserNotFoundException(userId);
         }
         return users.get(userId);
     }
@@ -37,7 +37,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User create(User user) {
         if (users.values().stream().anyMatch(s -> s.getEmail().equals(user.getEmail()))) {
-            throw new UserAlreadyExistException("User with Email = " + user.getEmail() + " already exist!");
+            throw new UserAlreadyExistException(user.getEmail());
         }
         user.setId(generateId());
         isUserValid(user);
@@ -48,7 +48,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User update(User user) {
         if (!users.containsKey(user.getId())) {
-            throw new UserNotFoundException("User with ID = " + user.getId() + " not found!");
+            throw new UserNotFoundException(user.getId());
         }
         if (user.getName() == null) {
             user.setName(users.get(user.getId()).getName());
@@ -62,7 +62,7 @@ public class InMemoryUserStorage implements UserStorage {
                 isUserValid(user);
                 users.put(user.getId(), user);
         } else {
-            throw new UserAlreadyExistException("User with Email = " + user.getEmail() + " already exist!");
+            throw new UserAlreadyExistException(user.getEmail());
         }
         return user;
     }
@@ -70,7 +70,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User delete(Long userId) {
         if (!users.containsKey(userId)) {
-            throw new UserNotFoundException("User with ID = " + userId + " not found!");
+            throw new UserNotFoundException(userId);
         }
         return users.remove(userId);
     }

@@ -4,6 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import ru.practicum.shareit.exception.ItemValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 
+/**
+ * Класс содержащий методы валидации для моделей Item и ItemDto
+ */
+
 public class ItemValidator {
 
     public static boolean isItemValid(Item item) {
