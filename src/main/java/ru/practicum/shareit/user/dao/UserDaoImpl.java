@@ -1,18 +1,16 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.user.dao;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.UserAlreadyExistException;
 import ru.practicum.shareit.exception.UserNotFoundException;
+import ru.practicum.shareit.user.entity.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static ru.practicum.shareit.user.UserValidator.isUserValid;
 
-@Component("InMemoryUserStorage")
-public class InMemoryUserStorage implements UserStorage {
+@Repository
+public class UserDaoImpl implements UserDao {
 
     public Map<Long, User> users = new HashMap<>();
     private Long id = 0L;
@@ -27,7 +25,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(Long userId) {
+    public User getById(Long userId) {
         if (!users.containsKey(userId)) {
             throw new UserNotFoundException(userId);
         }
@@ -50,21 +48,18 @@ public class InMemoryUserStorage implements UserStorage {
         if (!users.containsKey(user.getId())) {
             throw new UserNotFoundException(user.getId());
         }
-        if (user.getName() == null) {
-            user.setName(users.get(user.getId()).getName());
-        }
-        if (user.getEmail() == null) {
-            user.setEmail(users.get(user.getId()).getEmail());
-        }
+        User userToUpdate = users.get(user.getId());
+        Optional.ofNullable(user.getName()).ifPresent(userToUpdate::setName);
         if (users.values().stream()
                 .filter(u -> u.getEmail().equals(user.getEmail()))
                 .allMatch(u -> u.getId().equals(user.getId()))) {
-                isUserValid(user);
-                users.put(user.getId(), user);
+            Optional.ofNullable(user.getEmail()).ifPresent(userToUpdate::setEmail);
+            isUserValid(userToUpdate);
+            users.put(userToUpdate.getId(), userToUpdate);
         } else {
-            throw new UserAlreadyExistException(user.getEmail());
+            throw new UserAlreadyExistException(userToUpdate.getEmail());
         }
-        return user;
+        return userToUpdate;
     }
 
     @Override

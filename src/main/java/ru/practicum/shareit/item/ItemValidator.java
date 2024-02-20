@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import org.apache.commons.lang3.StringUtils;
 import ru.practicum.shareit.exception.ItemValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.entity.Item;
 
 /**
  * Класс содержащий методы валидации для моделей Item и ItemDto

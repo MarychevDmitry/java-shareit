@@ -3,67 +3,75 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.utilitary.Constants;
+import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.user.UserServiceImpl;
+import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
 import static ru.practicum.shareit.item.ItemValidator.isItemDtoValid;
-import static ru.practicum.shareit.utilitary.Constants.OWNER_HEADER;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/items")
+@RequiredArgsConstructor
 public class ItemController {
 
-    private final ItemServiceImpl itemService;
-    private final UserServiceImpl userService;
+    private final ItemService itemService;
+    private static final String HEADER_USER_ID = Constants.HEADER_USER_ID;
 
     @GetMapping("/{itemId}")
-    public ItemDto getItemById(@PathVariable Long itemId) {
-        log.info("GET request was received to the endpoint: '/items' to receive an item with ID={}", itemId);
-        return itemService.getItemById(itemId);
+    public ItemDto getItemById(@RequestHeader(HEADER_USER_ID) Long ownerId,
+                               @PathVariable Long itemId) {
+        log.info("GET: request was received to the endpoint: '/items' to receive an item with ID={}", itemId);
+        return itemService.getItemsByOwner(itemId, ownerId);
     }
 
     @GetMapping
-    public List<ItemDto> getItemsByOwner(@RequestHeader(OWNER_HEADER) Long ownerId) {
-        log.info("GET request was received to the endpoint: '/items' to receive all the owner's items with ID={}", ownerId);
-        return itemService.getItemsByOwner(ownerId);
+    public List<ItemDto> getItemsByOwner(@RequestHeader(HEADER_USER_ID) Long ownerId,
+                                         @RequestParam(defaultValue = "0") Integer from,
+                                         @RequestParam(defaultValue = "10") Integer size) {
+        log.info("GET: request was received to the endpoint: '/items' to receive all the owner's items with ID={}", ownerId);
+        return itemService.getItemsUser(ownerId, from, size);
     }
 
-    @GetMapping("/search")
-    public List<ItemDto> getItemsBySearchQuery(@RequestParam String text) {
-        log.info("GET request was received to the endpoint: '/items/search' to search for an item with text={}", text);
-        return itemService.getItemsBySearchQuery(text);
+    @GetMapping("search")
+    public List<ItemDto> searchItems(@RequestParam String text,
+                                     @RequestParam(defaultValue = "0") Integer from,
+                                     @RequestParam(defaultValue = "10") Integer size) {
+        log.info("GET: request was received to the endpoint: '/items/search' to search for an item with text={}", text);
+        return itemService.search(text, from, size);
     }
 
-    @ResponseBody
     @PostMapping
-    public ItemDto create(@RequestBody ItemDto itemDto, @RequestHeader(OWNER_HEADER) Long ownerId) {
-        log.info("POST request was received to the endpoint: '/items' to add an item by the owner with ID={}", ownerId);
-        ItemDto newItemDto = null;
-        if (userService.getUserById(ownerId) != null) {
-            newItemDto = itemService.create(itemDto, ownerId);
-        }
-        isItemDtoValid(newItemDto);
-        return newItemDto;
+    public ItemDto create(@RequestHeader(HEADER_USER_ID) Long ownerId, @RequestBody ItemDto itemDto) {
+        log.info("POST: request was received to the endpoint: '/items' to add an item by the owner with ID={}", ownerId);
+        isItemDtoValid(itemDto);
+        return itemService.create(itemDto, ownerId);
     }
 
-    @ResponseBody
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestBody ItemDto itemDto, @PathVariable Long itemId, @RequestHeader(OWNER_HEADER) Long ownerId) {
-        log.info("PATCH request was received to the endpoint: '/items' to update the item with ID={}", itemId);
-        ItemDto newItemDto = null;
-        if (userService.getUserById(ownerId) != null) {
-            newItemDto = itemService.update(itemDto, ownerId, itemId);
-        }
-        return newItemDto;
+    public ItemDto update(@RequestHeader(HEADER_USER_ID) Long ownerId,
+                          @PathVariable Long itemId,
+                          @RequestBody ItemDto itemDto) {
+
+        log.info("PATCH: request was received to the endpoint: '/items' to update the item with ID={}", itemId);
+        return itemService.updateItem(itemDto, itemId, ownerId);
     }
 
     @DeleteMapping("/{itemId}")
-    public ItemDto delete(@PathVariable Long itemId, @RequestHeader(OWNER_HEADER) Long ownerId) {
-        log.info("DELETE request was received to the endpoint: '/items' to delete an item with ID={}", itemId);
-        return itemService.delete(itemId, ownerId);
+    public void delete(@PathVariable Long itemId) {
+        log.info("DELETE: request was received to the endpoint: '/items' to delete an item with ID={}", itemId);
+        itemService.delete(itemId);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(@RequestHeader(HEADER_USER_ID) Long ownerId,
+                                 @PathVariable Long itemId,
+                                 @RequestBody CommentDto commentDto) {
+
+        log.info("POST: request was received to the endpoint: '/{itemId}/comment' user {} add comment for Item {}", ownerId, itemId);
+        return itemService.addComment(ownerId, itemId, commentDto);
     }
 }
