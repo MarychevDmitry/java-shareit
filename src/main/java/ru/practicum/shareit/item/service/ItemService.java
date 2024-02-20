@@ -11,7 +11,7 @@ public interface ItemService {
     ItemDto getItemsByOwner(Long itemId, Long ownerId);
 
 
-    List<ItemDto> getItemsUser(Long ownerId, Integer from, Integer size);
+    List<ItemDto> getItemsByOwner(Long ownerId, Integer from, Integer size);
 
     List<ItemDto> search(String text, Integer from, Integer size);
 
@@ -19,7 +19,7 @@ public interface ItemService {
 
     CommentDto addComment(Long ownerId, Long itemId, CommentDto commentDto);
 
-    ItemDto updateItem(ItemDto itemDto, Long itemId, Long ownerId);
+    ItemDto update(ItemDto itemDto, Long itemId, Long ownerId);
 
     void delete(Long itemId);
 }

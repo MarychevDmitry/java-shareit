@@ -73,7 +73,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public ItemDto updateItem(ItemDto itemDto, Long itemId, Long ownerId) {
+    public ItemDto update(ItemDto itemDto, Long itemId, Long ownerId) {
         checkUser(ownerId);
 
         User user = userRepository.findById(ownerId).get();
@@ -197,7 +197,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItemsUser(Long ownerId, Integer from, Integer size) {
+    public List<ItemDto> getItemsByOwner(Long ownerId, Integer from, Integer size) {
         checkUser(ownerId);
 
         PageRequest pageRequest = PageRequest.of(from / size, size);

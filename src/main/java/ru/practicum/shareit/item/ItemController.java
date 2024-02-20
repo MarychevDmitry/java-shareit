@@ -33,7 +33,7 @@ public class ItemController {
                                          @RequestParam(defaultValue = "0") Integer from,
                                          @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET: request was received to the endpoint: '/items' to receive all the owner's items with ID={}", ownerId);
-        return itemService.getItemsUser(ownerId, from, size);
+        return itemService.getItemsByOwner(ownerId, from, size);
     }
 
     @GetMapping("search")
@@ -57,7 +57,7 @@ public class ItemController {
                           @RequestBody ItemDto itemDto) {
 
         log.info("PATCH: request was received to the endpoint: '/items' to update the item with ID={}", itemId);
-        return itemService.updateItem(itemDto, itemId, ownerId);
+        return itemService.update(itemDto, itemId, ownerId);
     }
 
     @DeleteMapping("/{itemId}")
