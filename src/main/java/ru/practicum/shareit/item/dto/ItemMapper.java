@@ -1,15 +1,16 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.user.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemMapper {
+
     public static ItemDto toItemDto(Item item) {
         ItemDto itemDto = ItemDto.builder()
                 .id(item.getId())

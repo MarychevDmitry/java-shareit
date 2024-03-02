@@ -8,6 +8,8 @@ import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 
+import static ru.practicum.shareit.user.UserValidator.isUserDtoValid;
+
 /**
  * Класс описывающий Controller для модели User
  */
@@ -35,6 +37,7 @@ public class UserController {
     @PostMapping
     public UserDto createUser(@RequestBody UserDto userDto) {
         log.info("POST: request to the endpoint was received: '/users' to add a user");
+        isUserDtoValid(userDto);
         return userService.create(userDto);
     }
 

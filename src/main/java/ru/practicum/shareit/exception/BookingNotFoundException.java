@@ -6,11 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 public class BookingNotFoundException extends IllegalArgumentException {
     public BookingNotFoundException(String message) {
         super(message);
-        log.error("ERROR: " + message);
     }
 
     public BookingNotFoundException(Long id) {
         super("ERROR: Booking with ID = " + id + " not found!");
-        log.error("ERROR: Booking with ID = " + id + " not found!");
     }
 }

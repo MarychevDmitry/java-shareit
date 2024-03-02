@@ -25,7 +25,7 @@ public class ItemController {
     public ItemDto getItemById(@RequestHeader(HEADER_USER_ID) Long ownerId,
                                @PathVariable Long itemId) {
         log.info("GET: request was received to the endpoint: '/items' to receive an item with ID={}", itemId);
-        return itemService.getItemsByOwner(itemId, ownerId);
+        return itemService.getItemByOwner(itemId, ownerId);
     }
 
     @GetMapping
@@ -33,7 +33,7 @@ public class ItemController {
                                          @RequestParam(defaultValue = "0") Integer from,
                                          @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET: request was received to the endpoint: '/items' to receive all the owner's items with ID={}", ownerId);
-        return itemService.getItemsByOwner(ownerId, from, size);
+        return itemService.getItemByOwner(ownerId, from, size);
     }
 
     @GetMapping("search")

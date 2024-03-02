@@ -1,5 +1,7 @@
 package ru.practicum.shareit.booking.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -25,21 +27,18 @@ import static ru.practicum.shareit.booking.dto.BookingMapper.toBookingDto;
 import static ru.practicum.shareit.booking.dto.BookingMapper.toBookingDtoList;
 
 @Service
+@Slf4j
 @Transactional
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
-    private BookingRepository bookingRepository;
+
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
+    private final BookingRepository bookingRepository;
 
     @Transactional
     @Override
     public BookingOutDto addBooking(BookingDto bookingDto, Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException(userId);
-        }
         User user = getUserById(userId);
         Item item = getItemById(bookingDto.getItemId());
 
@@ -55,14 +54,6 @@ public class BookingServiceImpl implements BookingService {
         }
         if (booking.getStart().isAfter(booking.getEnd())) {
             throw new ValidationException("Start cannot be later than end");
-        }
-
-        if (bookingDto.getStart() == null || bookingDto.getEnd() == null) {
-            throw new IncorrectDataException("Booking: Dates are null!");
-        }
-        if (bookingDto.getEnd().isBefore(bookingDto.getStart()) || bookingDto.getStart().isEqual(bookingDto.getEnd())
-                || bookingDto.getEnd().isBefore(LocalDateTime.now()) || bookingDto.getStart().isBefore(LocalDateTime.now())) {
-            throw new IncorrectDataException("Booking: Problem in dates");
         }
         booking.setStatus(Status.WAITING);
         bookingRepository.save(booking);
@@ -131,7 +122,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingOutDto> getAllBookingsForAllItemsByOwnerId(Long userId, String state) {
         getUserById(userId);
-
         if (itemRepository.findByUserId(userId).isEmpty()) {
             throw new ValidationException("User does not have items to book");
         }
@@ -167,7 +157,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Transactional
     @Override
-    public BookingOutDto getBookingById(Long userId, Long bookingId) {
+    public BookingOutDto getBookingByIdAndBookerId(Long userId, Long bookingId) {
         getUserById(userId);
         Booking booking = getBookingById(bookingId);
 

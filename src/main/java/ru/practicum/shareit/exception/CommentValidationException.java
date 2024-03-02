@@ -8,6 +8,5 @@ import javax.validation.ValidationException;
 public class CommentValidationException extends ValidationException {
     public CommentValidationException(String message) {
         super(message);
-        log.error("ERROR: " + message);
     }
 }

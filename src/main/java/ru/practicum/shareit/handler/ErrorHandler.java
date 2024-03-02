@@ -32,7 +32,7 @@ public class ErrorHandler {
             RequestNotFoundException.class, NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final IllegalArgumentException exception) {
-        log.error("NOT_FOUND:404 : {}", exception.getMessage());
+        log.error("NOT_FOUND: 404 : {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 

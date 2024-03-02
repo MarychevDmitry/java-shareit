@@ -8,10 +8,9 @@ import java.util.List;
 public interface ItemService {
     ItemDto getById(Long itemId);
 
-    ItemDto getItemsByOwner(Long itemId, Long ownerId);
+    ItemDto getItemByOwner(Long itemId, Long ownerId);
 
-
-    List<ItemDto> getItemsByOwner(Long ownerId, Integer from, Integer size);
+    List<ItemDto> getItemByOwner(Long ownerId, Integer from, Integer size);
 
     List<ItemDto> search(String text, Integer from, Integer size);
 

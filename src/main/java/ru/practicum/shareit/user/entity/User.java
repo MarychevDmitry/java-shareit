@@ -8,7 +8,8 @@ import javax.persistence.*;
  * Класс описывающий модель User
  */
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -8,6 +8,5 @@ import javax.validation.ValidationException;
 public class BookingValidationException extends ValidationException {
     public BookingValidationException(String message) {
         super(message);
-        log.error("ERROR: " + message);
     }
 }

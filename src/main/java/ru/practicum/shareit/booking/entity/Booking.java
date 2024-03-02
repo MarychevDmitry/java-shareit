@@ -5,11 +5,12 @@ import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.user.entity.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Builder
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -20,8 +21,10 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
+    @NotNull
     @Column(name = "start_date", nullable = false)
     private LocalDateTime start = LocalDateTime.now();
+    @NotNull
     @Column(name = "end_date", nullable = false)
     private LocalDateTime end;
     @ManyToOne(fetch = FetchType.LAZY)
