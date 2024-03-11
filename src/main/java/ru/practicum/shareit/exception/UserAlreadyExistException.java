@@ -7,6 +7,5 @@ public class UserAlreadyExistException extends IllegalArgumentException {
 
     public UserAlreadyExistException(String userEmail) {
         super("ERROR: User with Email = " + userEmail + " already exist!");
-        log.error("ERROR: User with Email = " + userEmail + " already exist!");
     }
 }

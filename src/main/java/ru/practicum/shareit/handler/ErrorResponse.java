@@ -1,13 +1,11 @@
 package ru.practicum.shareit.handler;
 
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
 public class ErrorResponse {
-    private final String error;
-
-    public ErrorResponse(String error) {
-        this.error = error;
-    }
-
-    public String getError() {
-        return error;
-    }
+    @NonNull
+    private String error;
+    private String description;
 }
