@@ -122,46 +122,46 @@ public class BookingServiceImpl implements BookingService {
         switch (State.getEnumValue(state.toUpperCase())) {
             case ALL:
                 if (isOwner) {
-                    return toBookingDtoList( bookingRepository.findAllByItemIdInOrderByStartDesc(pageable, itemsId));
+                    return toBookingDtoList(bookingRepository.findAllByItemIdInOrderByStartDesc(pageable, itemsId));
                 } else {
-                    return toBookingDtoList( bookingRepository.findAllByBookerIdOrderByStartDesc(pageable, userId));
+                    return toBookingDtoList(bookingRepository.findAllByBookerIdOrderByStartDesc(pageable, userId));
                 }
             case CURRENT:
                 if (isOwner) {
-                    return toBookingDtoList( bookingRepository.findAllByItemIdInAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
+                    return toBookingDtoList(bookingRepository.findAllByItemIdInAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
                                             pageable, itemsId, LocalDateTime.now(), LocalDateTime.now()));
                 } else {
-                    return toBookingDtoList( bookingRepository.findAllByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
+                    return toBookingDtoList(bookingRepository.findAllByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
                                             pageable, userId, LocalDateTime.now(), LocalDateTime.now()));
                 }
             case PAST:
                 if (isOwner) {
-                    return toBookingDtoList( bookingRepository
+                    return toBookingDtoList(bookingRepository
                                     .findAllByItemIdInAndEndIsBeforeOrderByStartDesc(
                                             pageable, itemsId, LocalDateTime.now()));
                 } else {
-                    return toBookingDtoList( bookingRepository.findAllByBookerIdAndEndIsBeforeOrderByStartDesc(
+                    return toBookingDtoList(bookingRepository.findAllByBookerIdAndEndIsBeforeOrderByStartDesc(
                                             pageable, userId, LocalDateTime.now()));
                 }
             case FUTURE:
                 if (isOwner) {
-                    return toBookingDtoList( bookingRepository
+                    return toBookingDtoList(bookingRepository
                                     .findAllByItemIdInAndStartIsAfterOrderByStartDesc(pageable, itemsId, LocalDateTime.now()));
                 } else {
-                    return toBookingDtoList( bookingRepository
+                    return toBookingDtoList(bookingRepository
                                     .findAllByBookerIdAndStartIsAfterOrderByStartDesc(pageable, userId, LocalDateTime.now()));
                 }
             case WAITING:
                 if (isOwner) {
-                    return toBookingDtoList( bookingRepository
+                    return toBookingDtoList(bookingRepository
                                     .findAllByItemIdInAndStatusIsOrderByStartDesc(pageable, itemsId, Status.WAITING));
                 } else {
-                    return toBookingDtoList( bookingRepository
+                    return toBookingDtoList(bookingRepository
                                     .findAllByBookerIdAndStatusIsOrderByStartDesc(pageable, userId, Status.WAITING));
                 }
             case REJECTED:
                 if (isOwner) {
-                    return toBookingDtoList( bookingRepository
+                    return toBookingDtoList(bookingRepository
                                     .findAllByItemIdInAndStatusIsOrderByStartDesc(pageable, itemsId, Status.REJECTED));
                 } else {
                     return toBookingDtoList(bookingRepository

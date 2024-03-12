@@ -142,10 +142,10 @@ public class ItemServiceImpl implements ItemService {
         }
 
         if (item.getUser().getId().equals(ownerId)) {
-            Optional<Booking> lastBooking = bookingRepository.
-                    findFirstByItemIdAndStatusAndStartBeforeOrderByStartDesc(itemId, Status.APPROVED, LocalDateTime.now());
-            Optional<Booking> nextBooking = bookingRepository.
-                    findFirstByItemIdAndStatusAndStartAfterOrderByStartAsc(itemId, Status.APPROVED, LocalDateTime.now());
+            Optional<Booking> lastBooking = bookingRepository
+                    .findFirstByItemIdAndStatusAndStartBeforeOrderByStartDesc(itemId, Status.APPROVED, LocalDateTime.now());
+            Optional<Booking> nextBooking = bookingRepository
+                    .findFirstByItemIdAndStatusAndStartAfterOrderByStartAsc(itemId, Status.APPROVED, LocalDateTime.now());
             if (lastBooking.isPresent()) {
                 itemDto.setLastBooking(toBookingShortDto(lastBooking.get()));
             } else {
