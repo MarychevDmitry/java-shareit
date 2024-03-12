@@ -16,6 +16,9 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.entity.User;
 
+
+import javax.transaction.Transactional;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,6 +48,7 @@ public class ItemRequestServiceTest {
     }
 
     @Test
+    @Transactional
     public void createItemRequest() {
         userRepository.save(user1);
 
@@ -64,6 +68,7 @@ public class ItemRequestServiceTest {
     }
 
     @Test
+    @Transactional
     public void getPrivateRequest() {
         userRepository.save(user1);
         userRepository.save(user2);
@@ -84,6 +89,7 @@ public class ItemRequestServiceTest {
     }
 
     @Test
+    @Transactional
     public void getOtherRequests() {
         userRepository.save(user1);
         userRepository.save(user2);
