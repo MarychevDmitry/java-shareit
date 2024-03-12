@@ -11,6 +11,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 public class ItemValidator {
 
     public static boolean isItemDtoValid(ItemDto itemDto) {
+
         if (StringUtils.isBlank(itemDto.getName())) {
             throw new ItemValidationException("Item Name validation error.");
         } else if (StringUtils.isBlank(itemDto.getDescription())) {

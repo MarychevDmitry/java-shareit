@@ -12,12 +12,9 @@ import static ru.practicum.shareit.utilitary.PatternValidator.isPatternMatches;
  */
 
 public class UserValidator {
-
-
     public static boolean isUserDtoValid(UserDto userDto) {
-        if (userDto.getId() != null && userDto.getId() <= 0) {
-            throw new UserValidationException("Id validation error.");
-        } else if (StringUtils.isBlank(userDto.getName())) {
+
+        if (StringUtils.isBlank(userDto.getName())) {
             throw new UserValidationException("Name validation error.");
         } else if (!isPatternMatches(userDto.getEmail(), EMAIL_REGEX_PATTERN)) {
             throw new UserValidationException("Email validation error.");

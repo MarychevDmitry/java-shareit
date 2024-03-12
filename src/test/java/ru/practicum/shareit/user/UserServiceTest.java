@@ -140,6 +140,16 @@ public class UserServiceTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void updateUserUserNotExist() {
+        updateUser1 = UserDto.builder()
+                .email(user1.getEmail())
+                .build();
+
+        assertThatThrownBy(() -> userService.update(99L, updateUser1)).isInstanceOf(UserNotFoundException.class);
+    }
+
+    @Test
     public void deleteUserById() {
         var savedUser = userService.create(user1);
 

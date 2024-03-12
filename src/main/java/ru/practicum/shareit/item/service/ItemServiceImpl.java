@@ -204,10 +204,6 @@ public class ItemServiceImpl implements ItemService {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    private Item getItemById(Long itemId) {
-        return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
-    }
-
     private void checkUser(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException(userId);

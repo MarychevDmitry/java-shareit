@@ -81,6 +81,20 @@ public class UserControllerTest {
     }
 
     @Test
+    public void createUserWithEmptyName() throws Exception {
+        UserDto userDtoWithIncorrectName = UserDto.builder()
+                .name("     ")
+                .build();
+
+        mvc.perform(post("/users")
+                        .content(objectMapper.writeValueAsString(userDtoWithIncorrectName))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpectAll(status().isBadRequest());
+        verify(userService, times(0)).create(any(UserDto.class));
+    }
+
+    @Test
     public void createUserWithIncorrectEmail() throws Exception {
         UserDto userDtoWithIncorrectEmail = UserDto.builder()
                 .name("test name")
