@@ -23,11 +23,11 @@ public class ItemRequest {
     private Long id;
     @Column(nullable = false, length = 2000)
     private String description;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requester_id")
     private User requester;
     @Column
     private LocalDateTime created;
-    @OneToMany(mappedBy = "request", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "request", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Item> items;
 }
