@@ -25,7 +25,6 @@ import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -54,11 +53,11 @@ public class ItemServiceImpl implements ItemService {
         return toEntityItemDto(item);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ItemDto create(ItemDto itemDto, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ItemNotFoundException(userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
         Item item = fromEntityItemDto(itemDto, user);
         if (itemDto.getRequestId() != null) {
             item.setRequest(itemRequestRepository.findById(itemDto.getRequestId())
@@ -69,8 +68,8 @@ public class ItemServiceImpl implements ItemService {
         return toEntityItemDto(item);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ItemDto update(ItemDto itemDto, Long itemId, Long ownerId) {
         checkUser(ownerId);
 
@@ -127,9 +126,9 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    @Transactional
     @Override
-    public ItemDto getItemByOwner(Long itemId, Long ownerId) {
+    @Transactional
+    public ItemDto getItemsByOwner(Long itemId, Long ownerId) {
 
         if (!itemRepository.existsById(itemId)) {
             throw new ItemNotFoundException(itemId);
@@ -143,10 +142,10 @@ public class ItemServiceImpl implements ItemService {
         }
 
         if (item.getUser().getId().equals(ownerId)) {
-
-            Optional<Booking> lastBooking = bookingRepository.findFirstByItemIdAndStatusAndStartBeforeOrderByStartDesc(itemId, Status.APPROVED, LocalDateTime.now());
-            Optional<Booking> nextBooking = bookingRepository.findFirstByItemIdAndStatusAndStartAfterOrderByStartAsc(itemId, Status.APPROVED, LocalDateTime.now());
-
+            Optional<Booking> lastBooking = bookingRepository.
+                    findFirstByItemIdAndStatusAndStartBeforeOrderByStartDesc(itemId, Status.APPROVED, LocalDateTime.now());
+            Optional<Booking> nextBooking = bookingRepository.
+                    findFirstByItemIdAndStatusAndStartAfterOrderByStartAsc(itemId, Status.APPROVED, LocalDateTime.now());
             if (lastBooking.isPresent()) {
                 itemDto.setLastBooking(toBookingShortDto(lastBooking.get()));
             } else {
@@ -178,7 +177,7 @@ public class ItemServiceImpl implements ItemService {
         if (commentDto.getText().isEmpty())
             throw new CommentValidationException("Comment text can't be empty");
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
-                new EntityNotFoundException(String.format("Объект класса %s не найден", Item.class)));
+                new ItemNotFoundException(String.format("Object %s not found", Item.class)));
         if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(user.getId(), item.getId(), LocalDateTime.now())) {
             throw new CommentValidationException("User doesn't use this item");
         }
@@ -187,7 +186,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getItemByOwner(Long ownerId, Integer from, Integer size) {
+    public List<ItemDto> getItemsByOwner(Long ownerId, Integer from, Integer size) {
         checkUser(ownerId);
 
         PageRequest pageRequest = PageRequest.of(from / size, size);
@@ -195,7 +194,7 @@ public class ItemServiceImpl implements ItemService {
         List<Item> items = itemRepository.findByUserIdOrderById(ownerId, pageRequest);
         List<ItemDto> itemDtos = ItemMapper.toItemDtoList(items);
 
-        List<Booking> bookings = bookingRepository.findAllByOwnerId(ownerId, Sort.by(Sort.Direction.ASC, "start"));
+        List<Booking> bookings = bookingRepository.findAllByItem_UserId(ownerId, Sort.by(Sort.Direction.ASC, "start"));
         List<BookingShortDto> bookingShortDtos = bookings.stream()
                 .map(BookingMapper::toBookingShortDto)
                 .collect(Collectors.toList());
