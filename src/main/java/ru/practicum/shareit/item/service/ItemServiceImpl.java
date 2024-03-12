@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.booking.dto.BookingMapper.toBookingShortDto;
 import static ru.practicum.shareit.comment.dto.CommentMapper.toCommentDtoList;
-import static ru.practicum.shareit.item.ItemValidator.isItemValid;
 import static ru.practicum.shareit.item.dto.ItemMapper.*;
 
 @Service
@@ -42,13 +41,6 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRequestRepository itemRequestRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
-
-    @Override
-    public ItemDto getById(Long itemId) {
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new ItemNotFoundException(itemId));
-        return toEntityItemDto(item);
-    }
 
     @Override
     @Transactional
@@ -96,8 +88,6 @@ public class ItemServiceImpl implements ItemService {
         if (item.getAvailable() != null) {
             newItem.setAvailable(item.getAvailable());
         }
-
-        isItemValid(newItem);
 
         itemRepository.save(newItem);
 

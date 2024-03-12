@@ -21,13 +21,6 @@ public class ErrorHandler {
         return new ErrorResponse(exception.getMessage());
     }
 
-    /*@ExceptionHandler({IncorrectDataException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadRequestException(RuntimeException exception) {
-        log.error("BAD_REQUEST: 400 : {}", exception.getMessage());
-        return new ErrorResponse(exception.getMessage());
-    }*/
-
     @ExceptionHandler({UserNotFoundException.class, ItemNotFoundException.class, BookingNotFoundException.class,
             NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
