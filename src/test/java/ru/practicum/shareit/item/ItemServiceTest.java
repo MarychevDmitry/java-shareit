@@ -158,6 +158,7 @@ public class ItemServiceTest {
         assertThatThrownBy(() -> itemService.getItemsByOwner(2L, user1.getId()))
                 .isInstanceOf(ItemNotFoundException.class);
     }
+
     @Test
     public void getItemByNotExistingUserId() {
         userRepository.save(user1);
