@@ -3,7 +3,6 @@ package ru.practicum.shareit.user;
 import ru.practicum.shareit.exception.UserValidationException;
 import org.apache.commons.lang3.StringUtils;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.entity.User;
 
 import static ru.practicum.shareit.utilitary.Constants.EMAIL_REGEX_PATTERN;
 import static ru.practicum.shareit.utilitary.PatternValidator.isPatternMatches;
