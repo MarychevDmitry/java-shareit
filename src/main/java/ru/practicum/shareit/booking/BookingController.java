@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingOutDto;
 import ru.practicum.shareit.booking.service.BookingService;
-import ru.practicum.shareit.exception.IncorrectDataException;
 import ru.practicum.shareit.utilitary.Constants;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
@@ -32,11 +32,11 @@ public class BookingController {
     public BookingOutDto addBookings(@RequestHeader(Constants.HEADER_USER_ID) @Min(1) Long userId, @RequestBody @Valid BookingDto bookingDto) {
         log.info("POST: request to the endpoint was received: '/bookings' user {}, add new booking {}", userId, "bookingDto.getName()");
         if (bookingDto.getStart() == null || bookingDto.getEnd() == null) {
-            throw new IncorrectDataException("Booking: Dates are null!");
+            throw new ValidationException("Booking: Dates are null!");
         }
         if (bookingDto.getEnd().isBefore(bookingDto.getStart()) || bookingDto.getStart().isEqual(bookingDto.getEnd())
                 || bookingDto.getEnd().isBefore(LocalDateTime.now()) || bookingDto.getStart().isBefore(LocalDateTime.now())) {
-            throw new IncorrectDataException("Booking: Problem in dates");
+            throw new ValidationException("Booking: Problem in dates");
         }
         return bookingService.addBooking(bookingDto, userId);
     }

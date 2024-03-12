@@ -71,7 +71,7 @@ public class BookingServiceImpl implements BookingService {
 
         if (approved) {
             if (booking.getStatus().equals(Status.APPROVED)) {
-                throw new IncorrectDataException("Status is Approved");
+                throw new ValidationException("Status is Approved");
             }
             booking.setStatus(Status.APPROVED);
         } else {
