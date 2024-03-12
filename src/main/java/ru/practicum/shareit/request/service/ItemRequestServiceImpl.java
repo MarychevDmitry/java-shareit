@@ -15,6 +15,7 @@ import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestMapper mapper;
 
     @Override
+    @Transactional
     public ItemRequestDtoResponse createItemRequest(ItemRequestDto itemRequestDto, Long requesterId) {
         User user = userRepository.findById(requesterId).orElseThrow(() -> new UserNotFoundException(requesterId));
         ItemRequest newRequest = mapper.mapToItemRequest(itemRequestDto);
@@ -35,18 +37,21 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
+    @Transactional
     public List<RequestDtoResponseWithItem> getPrivateRequests(PageRequest pageRequest, Long requesterId) {
         userRepository.findById(requesterId).orElseThrow(() -> new UserNotFoundException(requesterId));
         return mapper.mapToRequestDtoResponseWithItem(itemRequestRepository.findAllByRequesterId(pageRequest, requesterId));
     }
 
     @Override
+    @Transactional
     public List<RequestDtoResponseWithItem> getOtherRequests(PageRequest pageRequest, Long requesterId) {
         userRepository.findById(requesterId).orElseThrow(() -> new UserNotFoundException(requesterId));
         return mapper.mapToRequestDtoResponseWithItem(itemRequestRepository.findAllByRequesterIdNot(pageRequest, requesterId));
     }
 
     @Override
+    @Transactional
     public RequestDtoResponseWithItem getItemRequest(Long userId, Long requestId) {
         userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException(userId));
