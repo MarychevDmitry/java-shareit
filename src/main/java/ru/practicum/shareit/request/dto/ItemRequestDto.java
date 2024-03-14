@@ -2,14 +2,16 @@ package ru.practicum.shareit.request.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.extern.jackson.Jacksonized;
 
-import java.sql.Date;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-@Data
 @Builder
+@Data
+@Jacksonized
 public class ItemRequestDto {
-    private Integer id;
+    @NotBlank(message = "поле text не должно быть пустым")
+    @Size(max = 500, message = "Превышена максимальная длина сообщения")
     private String description;
-    private String requesterName;
-    private Date created;
 }

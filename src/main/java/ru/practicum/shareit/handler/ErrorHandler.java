@@ -14,22 +14,15 @@ import javax.validation.ValidationException;
 public class ErrorHandler {
 
     @ExceptionHandler({ValidationException.class, UserValidationException.class, ItemValidationException.class,
-            BookingValidationException.class, CommentValidationException.class})
+            CommentValidationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(ValidationException exception) {
         log.error("BAD_REQUEST: 400 : {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
-    @ExceptionHandler({IncorrectDataException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadRequestException(RuntimeException exception) {
-        log.error("BAD_REQUEST: 400 : {}", exception.getMessage());
-        return new ErrorResponse(exception.getMessage());
-    }
-
     @ExceptionHandler({UserNotFoundException.class, ItemNotFoundException.class, BookingNotFoundException.class,
-            RequestNotFoundException.class, NotFoundException.class})
+            NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final IllegalArgumentException exception) {
         log.error("NOT_FOUND: 404 : {}", exception.getMessage());

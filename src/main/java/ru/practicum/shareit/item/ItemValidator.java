@@ -3,7 +3,6 @@ package ru.practicum.shareit.item;
 import org.apache.commons.lang3.StringUtils;
 import ru.practicum.shareit.exception.ItemValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.entity.Item;
 
 /**
  * Класс содержащий методы валидации для моделей Item и ItemDto
@@ -11,19 +10,8 @@ import ru.practicum.shareit.item.entity.Item;
 
 public class ItemValidator {
 
-    public static boolean isItemValid(Item item) {
-        if (StringUtils.isBlank(item.getName())) {
-            throw new ItemValidationException("Item Name validation error.");
-        } else if (StringUtils.isBlank(item.getDescription())) {
-            throw new ItemValidationException("Item Description validation error.");
-        } else if (item.getAvailable() == null) {
-            throw new ItemValidationException("Item Availability validation error.");
-        } else {
-            return true;
-        }
-    }
-
     public static boolean isItemDtoValid(ItemDto itemDto) {
+
         if (StringUtils.isBlank(itemDto.getName())) {
             throw new ItemValidationException("Item Name validation error.");
         } else if (StringUtils.isBlank(itemDto.getDescription())) {

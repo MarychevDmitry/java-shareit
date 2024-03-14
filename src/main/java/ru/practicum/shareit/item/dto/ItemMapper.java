@@ -41,17 +41,6 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public static Item fromItemDto(ItemDto itemDto, User user) {
-        return Item.builder()
-                .id(itemDto.getId())
-                .name(itemDto.getName())
-                .description(itemDto.getDescription())
-                .available(itemDto.getAvailable())
-                .user(user)
-                .build();
-    }
-
-
     public static Item fromEntityItemDto(ItemDto itemDto, User user) {
         return Item.builder()
                 .id(itemDto.getId())
