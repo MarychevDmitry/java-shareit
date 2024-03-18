@@ -26,7 +26,7 @@ public class BookingController {
 	@PostMapping
 	public ResponseEntity<Object> addBooking(@RequestHeader(Header.userIdHeader) @Min(1) Long bookerId,
 												@Valid @RequestBody BookingDto bookingDto) {
-		if(!bookingDto.getStart().isBefore(bookingDto.getEnd())) {
+		if (!bookingDto.getStart().isBefore(bookingDto.getEnd())) {
 			throw new ValidationException("Booking: Problem in dates");
 		}
 		log.info("POST: request to the endpoint was received: '/bookings' user {}, add new booking {}", bookerId, "bookingDto.getName()");
