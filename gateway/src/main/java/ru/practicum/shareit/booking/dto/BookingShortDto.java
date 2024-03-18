@@ -13,8 +13,6 @@ public class BookingShortDto {
     private Long id;
     private ItemDto item;
     private Long bookerId;
-    @NotNull
     private LocalDateTime start;
-    @NotNull
     private LocalDateTime end;
 }

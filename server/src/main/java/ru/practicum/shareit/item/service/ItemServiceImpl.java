@@ -13,7 +13,7 @@ import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.comment.dto.CommentMapper;
 import ru.practicum.shareit.comment.entity.Comment;
 import ru.practicum.shareit.comment.repository.CommentRepository;
-import ru.practicum.shareit.exception.CommentValidationException;
+import ru.practicum.shareit.exception.IncorrectCommentException;
 import ru.practicum.shareit.exception.ItemNotFoundException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.UserNotFoundException;
@@ -166,12 +166,10 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public CommentDto addComment(Long ownerId, Long itemId, CommentDto commentDto) {
         User user = getUserById(ownerId);
-        if (commentDto.getText().isEmpty())
-            throw new CommentValidationException("Comment text can't be empty");
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new ItemNotFoundException(String.format("Object %s not found", Item.class)));
         if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(user.getId(), item.getId(), LocalDateTime.now())) {
-            throw new CommentValidationException("User doesn't use this item");
+            throw new IncorrectCommentException("User doesn't use this item");
         }
         Comment comment = commentRepository.save(CommentMapper.fromComment(commentDto, item, user, LocalDateTime.now()));
         return CommentMapper.toCommentDto(comment);

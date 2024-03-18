@@ -17,7 +17,6 @@ import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -48,10 +47,10 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException("Owner " + userId + " can't book his item");
         }
         if (!item.getAvailable()) {
-            throw new ValidationException("Item " + item.getId() + " is booked");
+            throw new IncorrectBookingException("Item " + item.getId() + " is booked");
         }
         if (booking.getStart().isAfter(booking.getEnd())) {
-            throw new ValidationException("Start cannot be later than end");
+            throw new IncorrectBookingException("Start cannot be later than end");
         }
         booking.setStatus(Status.WAITING);
         bookingRepository.save(booking);
@@ -71,7 +70,7 @@ public class BookingServiceImpl implements BookingService {
 
         if (approved) {
             if (booking.getStatus().equals(Status.APPROVED)) {
-                throw new ValidationException("Status is Approved");
+                throw new IncorrectBookingException("Status is Approved");
             }
             booking.setStatus(Status.APPROVED);
         } else {

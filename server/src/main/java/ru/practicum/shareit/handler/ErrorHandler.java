@@ -7,16 +7,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.*;
 
-import javax.validation.ValidationException;
-
 @Slf4j
 @RestControllerAdvice()
 public class ErrorHandler {
 
-    @ExceptionHandler({ValidationException.class, UserValidationException.class, ItemValidationException.class,
-            CommentValidationException.class})
+    @ExceptionHandler({IncorrectCommentException.class, IncorrectBookingException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(ValidationException exception) {
+    public ErrorResponse handleValidationException(RuntimeException exception) {
         log.error("BAD_REQUEST: 400 : {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }

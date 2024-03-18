@@ -8,8 +8,6 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingOutDto;
 import ru.practicum.shareit.booking.service.BookingService;
 
-import javax.validation.ValidationException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.practicum.shareit.utilitary.Constants.HEADER_USER_ID;
